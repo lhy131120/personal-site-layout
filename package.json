@@ -12,6 +12,7 @@
     "vite": "^6.3.1"
   },
   "dependencies": {
-    "personal-site-2025": "file:"
+    "personal-site-2025": "file:",
+    "swiper": "^11.2.6"
   }
 }

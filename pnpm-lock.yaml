@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      personal-site-2025:
+        specifier: 'file:'
+        version: 'file:'
+      swiper:
+        specifier: ^11.2.6
+        version: 11.2.6
     devDependencies:
       vite:
         specifier: ^6.3.1
@@ -290,6 +297,9 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  'personal-site-2025@file:':
+    resolution: {directory: '', type: directory}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -309,6 +319,10 @@ packages:
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
+
+  swiper@11.2.6:
+    resolution: {integrity: sha512-8aXpYKtjy3DjcbzZfz+/OX/GhcU5h+looA6PbAzHMZT6ESSycSp9nAjPCenczgJyslV+rUGse64LMGpWE3PX9Q==}
+    engines: {node: '>= 4.7.0'}
 
   tinyglobby@0.2.13:
     resolution: {integrity: sha512-mEwzpUgrLySlveBwEVDMKk5B57bhLPYovRfPAXD5gA/98Opn0rCDj3GtLwFvCvH5RK9uPCExUROW5NjDwvqkxw==}
@@ -530,6 +544,10 @@ snapshots:
 
   nanoid@3.3.11: {}
 
+  'personal-site-2025@file:':
+    dependencies:
+      swiper: 11.2.6
+
   picocolors@1.1.1: {}
 
   picomatch@4.0.2: {}
@@ -567,6 +585,8 @@ snapshots:
       fsevents: 2.3.3
 
   source-map-js@1.2.1: {}
+
+  swiper@11.2.6: {}
 
   tinyglobby@0.2.13:
     dependencies:
