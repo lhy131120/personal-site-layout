@@ -1,5 +1,5 @@
 import Swiper from 'swiper';
-import { Navigation } from 'swiper/modules';
+import { Navigation, EffectFade } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
 
 import '../style/style.css';
@@ -28,23 +28,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if(document.querySelector(".blog")) {
     const swiper = new Swiper('.blog .swiper', {
-      modules: [Navigation],
+      modules: [Navigation, EffectFade],
       slidesPerView: 1,
-      spaceBetween: '1.5rem',
+      spaceBetween: 24,
       breakpoints: {
         992: {
-          slidesPerView: 2,
-          spaceBetween: '1.5rem',
-        },
-        1200: {
           slidesPerView: 3,
-          spaceBetween: '1.5rem',
+          spaceBetween: 24,
+          effect: 'slide',
         },
       },
       navigation: {
         nextEl: '.blog .swiper-button-next',
         prevEl: '.blog .swiper-button-prev',
-      }
+      },
     })
+    
   }
 });
