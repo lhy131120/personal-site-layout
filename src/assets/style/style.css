@@ -30,11 +30,6 @@
   font-display: swap;
 }
 
-/* Apply the font */
-/* body {
-  font-family: 'Noto Sans TC', sans-serif;
-} */
-
 :root {
   font-family: 'Noto Sans TC', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -95,12 +90,13 @@ h6 {
 
 ul,
 li,
-ol{
+ol {
   list-style: none;
   font-weight: 500;
 }
 
-ul.dot li, ol li{
+ul.dot li,
+ol li {
   padding-left: 1.5rem;
   position: relative;
 }
@@ -182,6 +178,7 @@ p {
 
 section {
   padding: 4rem 0;
+  overflow: hidden;
 }
 
 .text-primary {
@@ -299,7 +296,7 @@ section {
 
 .button.prev-page:before,
 .button.next-page:before {
-  content:'';
+  content: '';
   display: block;
   position: absolute;
   top: 50%;
@@ -495,6 +492,9 @@ a:hover .social-icon.instagram,
 .hero .row .col:last-child .hero-main-text {
   text-align: center;
   color: var(--primary-color);
+}
+
+.hero .row .col:last-child .hero-main-text > * {
   opacity: 0;
 }
 
@@ -679,8 +679,15 @@ a:hover .social-icon.instagram,
 .services .flex-wrap {
   gap: 0.25rem;
   justify-content: flex-end;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s ease;
 }
 
+.services .flex-wrap.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 @media (max-width: 991.98px) {
   .services .services-list {
@@ -719,7 +726,6 @@ a:hover .social-icon.instagram,
     padding: 1.5rem;
   }
 }
-
 
 /* section - blog */
 
@@ -791,7 +797,7 @@ a:hover .social-icon.instagram,
   -webkit-box-orient: vertical;
 }
 
-.blog-content-wrap  {
+.blog-content-wrap {
   border-top: 1px solid var(--secondary-color);
   border-bottom: 1px solid var(--secondary-color);
   padding: 5rem 0.75rem;
@@ -870,6 +876,14 @@ a:hover .social-icon.instagram,
   background-color: #EDEDED;
   max-width: 745px;
   width: 100%;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 1s ease;
+}
+
+.jobs-case.loaded .row .col:first-child {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .jobs-case .row .col:first-child .imgWrap {
@@ -886,6 +900,14 @@ a:hover .social-icon.instagram,
   position: relative;
   padding: 5rem 2.5rem;
   background-color: var(--section-bg-primary);
+  transform: translateX(30px);
+  opacity: 0;
+  transition: all 1s ease;
+}
+
+.jobs-case.loaded .row .col:last-child .text {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .jobs-case .row .col:last-child .text:first-child {
@@ -895,7 +917,15 @@ a:hover .social-icon.instagram,
 
 
 .jobs-case .row .col:last-child .text.bg-light {
+  transform: translateX(20px);
+  opacity: 0;
   background: var(--light-color);
+  transition: all 1s ease;
+}
+
+.jobs-case.loaded .row .col:last-child .text.bg-light {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .jobs-case .text .icon {
@@ -935,6 +965,14 @@ a:hover .social-icon.instagram,
 
 .jobs-case .section-jobs-case-list .card {
   width: calc(100% / 4);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all .75s ease;
+}
+
+.jobs-case .section-jobs-case-list .card.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .jobs-case .section-jobs-case-list .card-header {
@@ -1074,6 +1112,14 @@ a:hover .social-icon.instagram,
   aspect-ratio: 960 / 834;
   max-width: 960px;
   line-height: 0;
+  opacity: 0;
+  transform: scale(.85);
+  transition: all 1s ease;
+}
+
+.newsletter.loaded .row .col:first-child {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .newsletter .row .col:last-child {
@@ -1145,6 +1191,14 @@ a:hover .social-icon.instagram,
 
 .contact-list .contact-item {
   border-bottom: 1px solid var(--dark-color);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s ease;
+}
+
+.contact-list .contact-item.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .contact-list .contact-link {
@@ -1153,7 +1207,7 @@ a:hover .social-icon.instagram,
   align-items: center;
   padding: 1rem 0;
   background-color: transparent;
-  transition: all .25s ease;
+  transition: all 1.2s ease;
 }
 
 .contact-list .contact-link .arrow {
@@ -1358,33 +1412,43 @@ a:hover .social-icon.instagram,
   0% {
     transform: translateX(-10px);
   }
+
   10% {
     transform: translateX(10px);
   }
+
   20% {
     transform: translateX(-10px);
   }
+
   30% {
     transform: translateX(10px);
   }
+
   40% {
     transform: translateX(-10px);
   }
+
   50% {
     transform: translateX(10px);
   }
+
   60% {
     transform: translateX(-10px);
   }
+
   70% {
     transform: translateX(10px);
   }
+
   80% {
     transform: translateX(-10px);
   }
+
   90% {
     transform: translateX(10px);
   }
+
   100% {
     transform: translateX(-10px);
   }

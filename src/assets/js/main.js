@@ -44,55 +44,73 @@ document.addEventListener("DOMContentLoaded", function () {
 	function homeScrollAnimation() {
 		const heroCols = document.querySelectorAll(".hero .row .col");
 		heroCols.forEach((col, index) => {
-			gsap.fromTo(
-				col,
-				{ opacity: 0 },
-				{ opacity: 1, duration: .75, stagger: index * 80, ease: "power2.inOut", onComplete: () => {
-          if (index === heroCols.length - 1 && col.querySelector(".hero-main-text")) {
-						const div = col.querySelector(".hero-main-text");
-            const intro = document.querySelector(".hero .intro");
-						gsap.fromTo(div, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .75 }, ">.25");
-            gsap.fromTo(intro, {opacity: 0, y: 10}, {opacity: 1, y: 0, duration: .75}, ">.15");
+			if (index === 0) {
+				gsap.fromTo(col, { opacity: 0, x: "-5" }, { opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" });
+			} else {
+				gsap.fromTo(
+					col,
+					{ opacity: 0 },
+					{
+						opacity: 1,
+						duration: 1.2,
+						ease: "power2.inOut",
+						onComplete: () => {
+							const h1 = col.querySelector(".hero-main-text h1");
+							const p = col.querySelector(".hero-main-text p");
+              const intro = document.querySelector(".hero .intro");
+							gsap.fromTo(h1, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 });
+							gsap.fromTo(p, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 }, "-=.35");
+							gsap.fromTo(intro, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .85 }, "-=.25");
+						},
 					}
-        } }
-			);
+				);
+			}
 		});
 
-    gsap.utils.toArray("section").forEach(section => {
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top bottom-=20%",
-        end: "bottom top",
-        onEnter: () => {
-          section.classList.add("loaded");
-        },
-        onLeaveBack: () => {
-          section.classList.remove("loaded");
-        },
-      });
-    });
+		// section control add
+		// const sections = gsap.utils.toArray("main section");
+		// sections.forEach((section) => {
+		// 	const tl = gsap.timeline({
+		// 		scrollTrigger: {
+		// 			trigger: section,
+		// 			start: "top 80%",
+		// 			end: "bottom 20%",
+		// 			scrub: true,
+		// 			toggleClass: "loaded",
+		// 			// markers: true
+		// 		},
+		// 	});
+		// });
 
-    gsap.utils.toArray(".services .service-item").forEach(item => {
-      ScrollTrigger.create({
-        trigger: item,
-        start: "top bottom-=20%",
-        end: "bottom bottom-=40%",
-        markers:true,
-        onEnter: (self) => {
-          setTimeout(() => {
-            self.trigger.classList.add("show");
-          }, 100);
-          // gsap.fromTo(self.trigger.children[0], {opacity: 0, x: -10}, {opacity: 1, x: 0, duration: 1}, "-=.5");
-          // gsap.fromTo(self.trigger.children[1], {opacity: 0, x: 10}, {opacity: 1, x: 0, duration: 1}, "-=.5");
-        },
-        onLeaveBack: (self) => {
-          setTimeout(() => {
-						self.trigger.classList.remove("show");
-					}, 100);
-        }
-      })
-    })
-    
+		const sections = document.querySelectorAll("section");
+		const serviceItems = document.querySelectorAll(".services-list .service-item");
+		const serviceButton = document.querySelectorAll(".services .flex-wrap");
+		const jobsListCards = document.querySelectorAll(".section-jobs-case-list .card");
+    const contacItems = document.querySelectorAll(".contact-list .contact-item"); 
+
+		observeInterSectionRatio(sections, "loaded", 0.23);
+		observeInterSectionRatio(serviceItems, "show", 0.7);
+		observeInterSectionRatio(serviceButton, "show", 0.45);
+		observeInterSectionRatio(jobsListCards, "show", 0.45, true);
+		observeInterSectionRatio(contacItems, "show", 0.45, true);
+	}
+
+	function observeInterSectionRatio(items, _class, threshold, timeout = false) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry, index) => {
+					if (entry.intersectionRatio < threshold) return;
+					const addClass = () => {
+						entry.target.classList.add(_class);
+						observer.unobserve(entry.target);
+					};
+					timeout ? setTimeout(addClass, index * 200) : addClass();
+				});
+			},
+			{ threshold }
+		);
+
+		items.forEach((item) => observer.observe(item));
 	}
 
 	function insideScrollAnimation() {
