@@ -551,6 +551,12 @@ a:hover .social-icon.instagram,
   padding: 1.5rem;
 }
 
+.hero .card { opacity: 0;}
+.hero .card-body > * {
+  opacity: 0;
+  transform: translateY(35px);
+} 
+
 @media (max-width: 991.98px) {
   .hero .container {
     padding: 0 .75rem;
@@ -1314,6 +1320,17 @@ a:hover .social-icon.instagram,
   column-gap: 1.5rem;
   row-gap: 5rem;
   margin-bottom: 2.5rem;
+}
+
+.blog-list .card-list .card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s ease;
+}
+
+.blog-list .card-list .card.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (max-width: 991.98px) {

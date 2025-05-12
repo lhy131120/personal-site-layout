@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		const heroCols = document.querySelectorAll(".hero .row .col");
 		heroCols.forEach((col, index) => {
 			if (index === 0) {
-				gsap.fromTo(col, { opacity: 0, x: "-5" }, { opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" });
+				gsap.fromTo(col, { opacity: 0, x: "-5px" }, { opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" });
 			} else {
 				gsap.fromTo(
 					col,
@@ -57,36 +57,21 @@ document.addEventListener("DOMContentLoaded", function () {
 						onComplete: () => {
 							const h1 = col.querySelector(".hero-main-text h1");
 							const p = col.querySelector(".hero-main-text p");
-              const intro = document.querySelector(".hero .intro");
+							const intro = document.querySelector(".hero .intro");
 							gsap.fromTo(h1, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 });
 							gsap.fromTo(p, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 }, "-=.35");
-							gsap.fromTo(intro, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .85 }, "-=.25");
+							gsap.fromTo(intro, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.85 }, "-=.25");
 						},
 					}
 				);
 			}
 		});
 
-		// section control add
-		// const sections = gsap.utils.toArray("main section");
-		// sections.forEach((section) => {
-		// 	const tl = gsap.timeline({
-		// 		scrollTrigger: {
-		// 			trigger: section,
-		// 			start: "top 80%",
-		// 			end: "bottom 20%",
-		// 			scrub: true,
-		// 			toggleClass: "loaded",
-		// 			// markers: true
-		// 		},
-		// 	});
-		// });
-
 		const sections = document.querySelectorAll("section");
 		const serviceItems = document.querySelectorAll(".services-list .service-item");
 		const serviceButton = document.querySelectorAll(".services .flex-wrap");
 		const jobsListCards = document.querySelectorAll(".section-jobs-case-list .card");
-    const contacItems = document.querySelectorAll(".contact-list .contact-item"); 
+		const contacItems = document.querySelectorAll(".contact-list .contact-item");
 
 		observeInterSectionRatio(sections, "loaded", 0.23);
 		observeInterSectionRatio(serviceItems, "show", 0.7);
@@ -114,7 +99,59 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function insideScrollAnimation() {
-		console.log("inside");
+		const heroCols = document.querySelectorAll(".hero .row .col");
+		heroCols.forEach((col) => {
+			if (col.classList.contains("hero-main-img")) {
+				gsap.fromTo(col, { opacity: 0, x: "-5px" }, { opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" });
+			} else if (col.classList.contains("hero-main-text-wrap")) {
+				gsap.fromTo(
+					col,
+					{ opacity: 0 },
+					{
+						opacity: 1,
+						duration: 1.2,
+						ease: "power2.inOut",
+						onComplete: () => {
+							const h1 = col.querySelector(".hero-main-text h1");
+							const p = col.querySelector(".hero-main-text p");
+							gsap.fromTo(h1, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 });
+							gsap.fromTo(p, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 }, "-=.35");
+						},
+					}
+				);
+			} else if (col.classList.contains("hero-sub-img")) {
+				gsap.fromTo(col, { opacity: 0, x: "-7px" }, { opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" }, "-=.35");
+			} else if (col.classList.contains("card")) {
+				// const date = col.querySelector(".blog-item-date");
+				// const index = col.querySelector(".blog-item-index");
+				// const h2 = col.querySelector("h2");
+				// const text = col.querySelector(".blog-item-text");
+				// const button = col.querySelector(".button");
+				const items = col.querySelectorAll(".card-body > * ");
+				gsap.fromTo(
+					col,
+					{ opacity: 0 },
+					{
+						opacity: 1,
+						duration: 1.2,
+						ease: "power2.inOut",
+						onComplete: () => {
+							items.forEach((item, index) => {
+								gsap.fromTo(
+									item,
+									{ opacity: 0, y: 35 },
+									{ opacity: 1, y: 0, duration: 1, ease: "power2.inOut", delay: index * 0.05 }
+								);
+							},"-=.25");
+						},
+					},
+					"-=1.5"
+				);
+			}
+		});
+
+    const blogListCards = document.querySelectorAll(".blog-list .card");
+    observeInterSectionRatio(blogListCards, "show", 0.45, true);
 	}
 
 	// Common Function - Back To Top Button
