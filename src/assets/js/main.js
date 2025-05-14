@@ -80,16 +80,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		observeInterSectionRatio(contacItems, "show", 0.45, true);
 	}
 
-	function observeInterSectionRatio(items, _class, threshold, timeout = false) {
+	function observeInterSectionRatio(items, className, threshold, useTimeout = false) {
+    console.log(items);
+    
+		if (!items.length) return;
+
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry, index) => {
-					if (entry.intersectionRatio < threshold) return;
-					const addClass = () => {
-						entry.target.classList.add(_class);
-						observer.unobserve(entry.target);
-					};
-					timeout ? setTimeout(addClass, index * 200) : addClass();
+					if (entry.intersectionRatio >= threshold) {
+						const addClassAndUnobserve = () => {
+							entry.target.classList.add(className);
+							observer.unobserve(entry.target);
+						};
+						useTimeout ? setTimeout(addClassAndUnobserve, index * 200) : addClassAndUnobserve();
+					}
 				});
 			},
 			{ threshold }
@@ -101,79 +106,93 @@ document.addEventListener("DOMContentLoaded", function () {
 	function insideScrollAnimation() {
 		const heroCols = document.querySelectorAll(".hero .row .col");
 		heroCols.forEach((col) => {
-			if (col.classList.contains("hero-main-img")) {
-				gsap.fromTo(col, { opacity: 0, x: "-5px" }, { opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" });
-			} else if (col.classList.contains("hero-main-text-wrap")) {
-				gsap.fromTo(
-					col,
-					{ opacity: 0 },
-					{
-						opacity: 1,
-						duration: 1.2,
-						ease: "power2.inOut",
-						onComplete: () => {
-							const h1 = col.querySelector(".hero-main-text h1");
-							const p = col.querySelector(".hero-main-text p");
-							gsap.fromTo(h1, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 });
-							gsap.fromTo(p, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 }, "-=.35");
-						},
-					}
-				);
-			} else if (col.classList.contains("hero-sub-img")) {
-				gsap.fromTo(col, { opacity: 0, x: "-7px" }, { opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" }, "-=.35");
-			} else if (col.classList.contains("card")) {
-				// const date = col.querySelector(".blog-item-date");
-				// const index = col.querySelector(".blog-item-index");
-				// const h2 = col.querySelector("h2");
-				// const text = col.querySelector(".blog-item-text");
-				// const button = col.querySelector(".button");
-				const items = col.querySelectorAll(".card-body > * ");
-				gsap.fromTo(
-					col,
-					{ opacity: 0 },
-					{
-						opacity: 1,
-						duration: 1.2,
-						ease: "power2.inOut",
-						onComplete: () => {
-							items.forEach((item, index) => {
-								gsap.fromTo(
-									item,
-									{ opacity: 0, y: 35 },
-									{ opacity: 1, y: 0, duration: 1, ease: "power2.inOut", delay: index * 0.05 }
+
+			const classMap = {
+				"hero-main-img": () =>
+					gsap.fromTo(col, { opacity: 0, x: "-5px" }, { opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" }),
+				"hero-main-text-wrap": () =>
+					gsap.fromTo(
+						col,
+						{ opacity: 0 },
+						{
+							opacity: 1,
+							duration: 1.2,
+							ease: "power2.inOut",
+							onComplete: () => {
+								const elements = [
+									{ el: col.querySelector(".hero-main-text h1"), delay: 0 },
+									{ el: col.querySelector(".hero-main-text p"), delay: 0.35 },
+								];
+
+								elements.forEach(({ el, delay }) =>
+									gsap.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1, delay })
 								);
-							},"-=.25");
+							},
+						}
+					),
+				"hero-sub-img": () =>
+					gsap.fromTo(
+						col,
+						{ opacity: 0, x: "-7px" },
+						{ opacity: 1, x: 0, duration: 1.2, ease: "power2.inOut" },
+						"-=.35"
+					),
+				card: () =>
+					gsap.fromTo(
+						col,
+						{ opacity: 0 },
+						{
+							opacity: 1,
+							duration: 1.2,
+							ease: "power2.inOut",
+							onComplete: () => {
+								col.querySelectorAll(".card-body > *").forEach((item, index) => {
+									gsap.fromTo(
+										item,
+										{ opacity: 0, y: 35 },
+										{ opacity: 1, y: 0, duration: 1, ease: "power2.inOut", delay: index * 0.05 }
+									);
+								});
+							},
 						},
-					},
-					"-=1.5"
-				);
+						"-=1.5"
+					),
+			};
+
+			for (const [className, animation] of Object.entries(classMap)) {
+				if (col.classList.contains(className)) {
+					animation();
+					break;
+				}
 			}
 		});
 
-    const blogListCards = document.querySelectorAll(".blog-list .card");
-    observeInterSectionRatio(blogListCards, "show", 0.45, true);
+		observeInterSectionRatio(document.querySelectorAll(".blog-list .card"), "show", 0.45, true);
+    observeInterSectionRatio(document.querySelectorAll(".blog-content-wrap"), "loaded", 0.13);
 	}
 
 	// Common Function - Back To Top Button
-	const backTopBtn = document.querySelector(".back-top");
-	if (backTopBtn) {
-		window.addEventListener("scroll", function () {
-			if (window.scrollY > 200) {
-				backTopBtn.classList.add("show");
-			} else {
-				backTopBtn.classList.remove("show");
-			}
-		});
+	const setUpBackToTop = () => {
+		const backTopBtn = document.querySelector(".back-top");
 
+		if (!backTopBtn) {
+			console.warn("Back to Top button not found in the DOM.");
+			return;
+		}
+		const toggleVisibility = () => {
+			backTopBtn.classList.toggle("show", window.scrollY > 200);
+		};
+
+		window.addEventListener("scroll", toggleVisibility);
 		backTopBtn.addEventListener("click", function () {
 			window.scrollTo({
 				top: 0,
 				behavior: "smooth",
 			});
 		});
-	} else {
-		console.warn("Back to Top button not found in the DOM.");
-	}
+	};
+
+	setUpBackToTop();
 
 	// Index Page - Swiper
 	if (document.querySelector(".blog")) {
